@@ -23,6 +23,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/dashboard/**").permitAll()
                         //.anyRequest().authenticated() // Require login for all other future endpoints (like dashboard)
                         .requestMatchers("/api/inventory/**").permitAll() // NEW: Whitelist inventory endpoints
+                        .requestMatchers("/api/recipes/**").permitAll()
                         .anyRequest().authenticated()
                 );
 
