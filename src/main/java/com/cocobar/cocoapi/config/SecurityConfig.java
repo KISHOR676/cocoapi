@@ -26,6 +26,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/recipes/**").permitAll()
                         .requestMatchers("/api/sales/**").permitAll()
                         .requestMatchers("/api/sales/bulk/**").permitAll()
+                        .requestMatchers("/api/history/**").permitAll()
                         .anyRequest().authenticated()
                 );
 
