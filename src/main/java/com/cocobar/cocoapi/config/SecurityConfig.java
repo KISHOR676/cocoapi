@@ -24,6 +24,7 @@ public class SecurityConfig {
                         //.anyRequest().authenticated() // Require login for all other future endpoints (like dashboard)
                         .requestMatchers("/api/inventory/**").permitAll() // NEW: Whitelist inventory endpoints
                         .requestMatchers("/api/recipes/**").permitAll()
+                        .requestMatchers("/api/sales/**").permitAll()
                         .anyRequest().authenticated()
                 );
 
