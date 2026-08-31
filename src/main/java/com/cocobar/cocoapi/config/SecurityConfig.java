@@ -25,6 +25,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/inventory/**").permitAll() // NEW: Whitelist inventory endpoints
                         .requestMatchers("/api/recipes/**").permitAll()
                         .requestMatchers("/api/sales/**").permitAll()
+                        .requestMatchers("/api/sales/bulk/**").permitAll()
                         .anyRequest().authenticated()
                 );
 
