@@ -1,5 +1,6 @@
 package com.cocobar.cocoapi.controller;
 
+import com.cocobar.cocoapi.dto.SaleDetailDTO;
 import com.cocobar.cocoapi.model.*;
 import com.cocobar.cocoapi.repository.RawMaterialRepository;
 import com.cocobar.cocoapi.repository.RecipeRepository;
@@ -10,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/sales")
@@ -23,6 +25,9 @@ public class SaleController {
 
     @Autowired
     private RawMaterialRepository rawMaterialRepository;
+
+    @Autowired
+    private SaleRepository saleRepo;
 
     @PostMapping
     @Transactional
@@ -96,5 +101,10 @@ public class SaleController {
             completedSales.add(saleRepository.save(sale));
         }
         return ResponseEntity.ok(completedSales);
+    }
+    @GetMapping("/daily-details")
+    public ResponseEntity<List<SaleDetailDTO>> getDailyDetailedSales(@RequestParam("date") String date) {
+        java.time.LocalDate localDate = java.time.LocalDate.parse(date);
+        return ResponseEntity.ok(saleRepo.getDetailedSalesForDate(localDate));
     }
 }

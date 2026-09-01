@@ -1,6 +1,7 @@
 package com.cocobar.cocoapi.repository;
 
 import com.cocobar.cocoapi.dto.DailySaleDTO;
+import com.cocobar.cocoapi.dto.SaleDetailDTO;
 import com.cocobar.cocoapi.dto.SalesOverviewDTO;
 import com.cocobar.cocoapi.dto.TopSellingDTO;
 import com.cocobar.cocoapi.model.Sale;
@@ -40,4 +41,8 @@ public interface SaleRepository extends JpaRepository<Sale, Long> {
             "FROM sales WHERE sale_date >= :startDate " +
             "GROUP BY DATE(sale_date) ORDER BY DATE(sale_date) ASC", nativeQuery = true)
     List<Object[]> getWeeklySalesGraphData(@Param("startDate") LocalDateTime startDate);
+
+    @Query("SELECT new com.cocobar.cocoapi.dto.SaleDetailDTO(s.id, r.name, r.imageUrl, s.quantity, s.totalPrice, s.saleDate) " +
+            "FROM Sale s JOIN s.recipe r WHERE DATE(s.saleDate) = :exactDate ORDER BY s.saleDate DESC")
+    List<SaleDetailDTO> getDetailedSalesForDate(@Param("exactDate") java.time.LocalDate exactDate);
 }
