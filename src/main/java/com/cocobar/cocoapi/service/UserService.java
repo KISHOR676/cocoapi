@@ -1,5 +1,6 @@
 package com.cocobar.cocoapi.service;
 
+import com.cocobar.cocoapi.dto.ChangePasswordDTO;
 import com.cocobar.cocoapi.dto.LoginRequest;
 import com.cocobar.cocoapi.dto.RegistrationRequest;
 import com.cocobar.cocoapi.model.User;
@@ -46,5 +47,23 @@ public class UserService {
 
         // 3. If everything is correct, return the user
         return user;
+    }
+
+    // Add this inside UserService.java
+    public void changePassword(ChangePasswordDTO request) throws Exception {
+        // 1. Find the user by username (You likely already have a findByUsername method from login)
+        User user = userRepository.findByBusinessEmail(request.getBusinessEmail())
+                .orElseThrow(() -> new Exception("User not found"));
+
+        // 2. Verify the old password matches the database
+        // Note: If you are using BCrypt password encoding, use passwordEncoder.matches() instead of .equals()
+        if (!user.getPassword().equals(request.getOldPassword())) {
+            throw new Exception("Incorrect current password");
+        }
+
+        // 3. Update the password and save
+        // Note: If using BCrypt, encode the new password here before saving
+        user.setPassword(request.getNewPassword());
+        userRepository.save(user);
     }
 }

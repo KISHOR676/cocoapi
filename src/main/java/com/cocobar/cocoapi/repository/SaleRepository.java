@@ -1,9 +1,6 @@
 package com.cocobar.cocoapi.repository;
 
-import com.cocobar.cocoapi.dto.DailySaleDTO;
-import com.cocobar.cocoapi.dto.SaleDetailDTO;
-import com.cocobar.cocoapi.dto.SalesOverviewDTO;
-import com.cocobar.cocoapi.dto.TopSellingDTO;
+import com.cocobar.cocoapi.dto.*;
 import com.cocobar.cocoapi.model.Sale;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -45,4 +42,11 @@ public interface SaleRepository extends JpaRepository<Sale, Long> {
     @Query("SELECT new com.cocobar.cocoapi.dto.SaleDetailDTO(s.id, r.name, r.imageUrl, s.quantity, s.totalPrice, s.saleDate) " +
             "FROM Sale s JOIN s.recipe r WHERE DATE(s.saleDate) = :exactDate ORDER BY s.saleDate DESC")
     List<SaleDetailDTO> getDetailedSalesForDate(@Param("exactDate") java.time.LocalDate exactDate);
+
+    @Query("SELECT new com.cocobar.cocoapi.dto.TopItemDTO(r.name, SUM(s.quantity)) " +
+            "FROM Sale s JOIN s.recipe r WHERE DATE(s.saleDate) BETWEEN :startDate AND :endDate " +
+            "GROUP BY r.name ORDER BY SUM(s.quantity) DESC")
+    List<TopItemDTO> getTopItemsForRange(
+            @org.springframework.data.repository.query.Param("startDate") java.time.LocalDate startDate,
+            @org.springframework.data.repository.query.Param("endDate") java.time.LocalDate endDate);
 }
