@@ -16,7 +16,8 @@ public class RecipeController {
 
     @GetMapping
     public List<Recipe> getAllRecipes() {
-        return repository.findAll();
+        return repository.findByIsActiveTrue();
+//        return repository.findAll();
     }
 
     @PostMapping
@@ -43,6 +44,11 @@ public class RecipeController {
     // DELETE RECIPE
     @DeleteMapping("/{id}")
     public void deleteRecipe(@PathVariable Long id) {
-        repository.deleteById(id);
+        Recipe recipe = repository.findById(id).orElseThrow(() -> new RuntimeException("Recipe not found"));
+        recipe.setActive(false); // Sets isActive to false instead of deleting
+        repository.save(recipe);
     }
+//    public void deleteRecipe(@PathVariable Long id) {
+//        repository.deleteById(id);
+//    }
 }

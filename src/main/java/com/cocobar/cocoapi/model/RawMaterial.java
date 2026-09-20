@@ -3,10 +3,16 @@ package com.cocobar.cocoapi.model;
 import jakarta.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import jakarta.persistence.Column;
 
 @Entity
 @Table(name = "raw_materials")
 public class RawMaterial {
+
+    // Add this inside both RawMaterial.java and Recipe.java
+    @Column(name = "is_active", nullable = false)
+    private boolean isActive = true;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long itemNo;
@@ -24,6 +30,16 @@ public class RawMaterial {
     }
 
     // Getters and Setters
+
+    // Generate the Getter and Setter for this new field
+    public boolean isActive() {
+        return isActive;
+    }
+
+    public void setActive(boolean active) {
+        isActive = active;
+    }
+
     public Long getItemNo() {
         return itemNo;
     }

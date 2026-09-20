@@ -17,7 +17,7 @@ public class InventoryController {
 
     @GetMapping
     public List<RawMaterial> getAllInventory() {
-        return repository.findAll();
+        return repository.findByIsActiveTrue();
     }
 
     @PostMapping
@@ -44,6 +44,11 @@ public class InventoryController {
     // NEW: Delete Item endpoint
     @DeleteMapping("/{id}")
     public void deleteItem(@PathVariable Long id) {
-        repository.deleteById(id);
+        RawMaterial item = repository.findById(id).orElseThrow(() -> new RuntimeException("Item not found"));
+        item.setActive(false); // Sets isActive to false instead of deleting
+        repository.save(item);
     }
+//    public void deleteItem(@PathVariable Long id) {
+//        repository.deleteById(id);
+//    }
 }

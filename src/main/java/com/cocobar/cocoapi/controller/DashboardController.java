@@ -62,9 +62,13 @@ public class DashboardController {
         }
         summary.setSalesGraphData(graphData);
 
-        // NEW: Count the total products available in the database
-        long totalProductsCount = recipeRepository.count();
+        // Count ONLY active products available in the database
+        long totalProductsCount = recipeRepository.countByIsActiveTrue();
         summary.setTotalProducts((int) totalProductsCount);
+
+//        // NEW: Count the total products available in the database
+//        long totalProductsCount = recipeRepository.count();
+//        summary.setTotalProducts((int) totalProductsCount);
 
         return ResponseEntity.ok(summary);
     }
